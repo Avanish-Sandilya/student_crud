@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service  // Marks this class as a service layer
 public class StudentService {
@@ -14,9 +15,11 @@ public class StudentService {
     @Autowired
     private StudentRepository studentRepository;
 
-    // Get all students
-    public List<Student> getAllStudents() {
-        return studentRepository.findAll();
+    // Get all students or filter by name if provided
+    public List<Student> getStudents(Optional<String> name) {
+        return name.map(s -> studentRepository.findAll().stream()
+                .filter(student -> student.getName().equalsIgnoreCase(s))
+                .collect(Collectors.toList())).orElseGet(() -> studentRepository.findAll());
     }
 
     // Get student by ID

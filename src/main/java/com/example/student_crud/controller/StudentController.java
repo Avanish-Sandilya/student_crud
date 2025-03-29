@@ -15,10 +15,10 @@ public class StudentController {
     @Autowired
     private StudentService studentService;
 
-    // Get all students
+    // Get all students (or filter by name if provided)
     @GetMapping
-    public List<Student> getAllStudents() {
-        return studentService.getAllStudents();
+    public List<Student> getStudents(@RequestParam Optional<String> name) {
+        return studentService.getStudents(name);
     }
 
     // Get a single student by ID
